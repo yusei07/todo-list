@@ -5,10 +5,23 @@ module.exports = {
     './src/**/*.{html,js}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        inter: ['Inter'],
+      },
+      colors: {
+        semiBlack: '#1E1E1E',
+        semiGray: '#E2E2E1',
+        white: '#FDFDFD',
+        semiPink: '#C8A0D7',
+        softGreen: '#D0DDDB'
+      },
+    },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require("daisyui"),
+  ],
 }
