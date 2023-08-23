@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  [type='checkbox'] {
+    @apply w-4 h-4 checked:bg-semiPink text-semiPink rounded-md border border-semiBlack focus:ring-0;
+  }
+}
+
+@layer components {
+  .btn{
+    text-transform: none;
+  }
+}
+
