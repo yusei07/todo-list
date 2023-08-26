@@ -1,6 +1,8 @@
-export const toDoContainer = (title, date, toDoIndex) => {
+import { ToDo } from "./task.js";
+
+export const toDoContainer = (title, date, taskIndex) => {
   const toDoElement = `
-  <div class="flex flex-row items-center justify-between border-b border-semiGray py-5" data-index="${toDoIndex}">
+  <div class="flex flex-row items-center justify-between border-b border-semiGray py-5" data-index="${taskIndex}">
     <!-- chekcbox & title -->
     <div class="flex flex-row items-center gap-2">
       <input type="checkbox">
@@ -61,5 +63,21 @@ export const dynamicDate = () => {
   currentDateEl.innerText = getCurrentDate
 }
 
+// display task count
+export const displayTaskCount = () => {
+  const $totalTask = document.querySelector("#total-task");
+  $totalTask.innerText = `Tasks (${ToDo.taskCount})`
+} 
+
 // display alert msg
 // alertMessageHTML.display()
+
+// drawer toggle
+// const $drawer = document.querySelector("#my-drawer-2");
+// const $drawerMain = document.querySelector("#main-drawer");
+
+// $drawer.addEventListener("change", () => {
+//   $drawer.parentNode.classList.remove("lg:drawer-open");
+//   $drawer.parentNode.classList.add("lg:drawer-close");
+// })
+
