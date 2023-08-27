@@ -15,7 +15,8 @@ module.exports = {
         semiGray: '#E2E2E1',
         white: '#FDFDFD',
         semiPink: '#C8A0D7',
-        softGreen: '#D0DDDB'
+        softGreen: '#D0DDDB',
+        secondary: '#a2a29f'
       },
     },
   },
