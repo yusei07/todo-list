@@ -2,7 +2,7 @@ import { ToDo } from "./task.js";
 
 export const toDoContainer = (title, date, taskIndex) => {
   const toDoElement = `
-  <div id="todo-element" class="flex flex-row items-center justify-between border-b border-semiGray py-5" data-index="${taskIndex}">
+  <div id="todo-element" class="flex flex-row items-center justify-between border-b border-semiGray py-5"">
     <!-- chekcbox & title -->
     <div class="flex flex-row items-center gap-2">
       <input type="checkbox">
@@ -13,7 +13,7 @@ export const toDoContainer = (title, date, taskIndex) => {
       <span class="text-semiBlack text-sm">${date}</span>
       <i id="info-btn" data-feather="info" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
       <i id="edit-btn" data-feather="edit-3" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
-      <i id="del-btn" data-feather="x" class="delete-btn w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
+      <i id="del-btn" data-index="${taskIndex}" data-feather="x" class="delete-btn w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
     </div>
   </div>`;
 
