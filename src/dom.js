@@ -2,7 +2,7 @@ import { ToDo } from "./task.js";
 
 export const toDoContainer = (title, date, taskIndex) => {
   const toDoElement = `
-  <div class="flex flex-row items-center justify-between border-b border-semiGray py-5" data-index="${taskIndex}">
+  <div id="todo-element" class="flex flex-row items-center justify-between border-b border-semiGray py-5" data-index="${taskIndex}">
     <!-- chekcbox & title -->
     <div class="flex flex-row items-center gap-2">
       <input type="checkbox">
@@ -11,9 +11,9 @@ export const toDoContainer = (title, date, taskIndex) => {
     <!-- details/due date/edit/delete -->
     <div class="flex flex-row items-center gap-4">
       <span class="text-semiBlack text-sm">${date}</span>
-      <i data-feather="info" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
-      <i data-feather="edit-3" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
-      <i data-feather="x" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
+      <i id="info-btn" data-feather="info" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
+      <i id="edit-btn" data-feather="edit-3" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
+      <i id="del-btn" data-feather="x" class="delete-btn w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
     </div>
   </div>`;
 
@@ -67,7 +67,7 @@ export const dynamicDate = () => {
 export const displayTaskCount = () => {
   const $totalTask = document.querySelector("#total-task");
   $totalTask.innerText = `Tasks (${ToDo.taskCount})`
-} 
+}
 
 // display alert msg
 // alertMessageHTML.display()
