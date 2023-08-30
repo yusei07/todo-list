@@ -2,7 +2,7 @@ import { ToDo } from "./task.js";
 
 export const toDoContainer = (title, date, taskIndex) => {
   const toDoElement = `
-  <div id="todo-element" class="flex flex-row items-center justify-between border-b border-semiGray py-5"">
+  <div id="todo-element" class="flex flex-row items-center justify-between border-b border-semiGray py-5">
     <!-- chekcbox & title -->
     <div class="flex flex-row items-center gap-2">
       <input type="checkbox">
@@ -11,8 +11,8 @@ export const toDoContainer = (title, date, taskIndex) => {
     <!-- details/due date/edit/delete -->
     <div class="flex flex-row items-center gap-4">
       <span class="text-semiBlack text-sm">${date}</span>
-      <i id="info-btn" data-feather="info" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
-      <i id="edit-btn" data-feather="edit-3" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
+      <i id="info-btn" data-index="${taskIndex}" data-feather="info" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
+      <i id="edit-btn" data-index="${taskIndex}" data-feather="edit-3" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
       <i id="del-btn" data-index="${taskIndex}" data-feather="x" class="delete-btn w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
     </div>
   </div>`;
@@ -33,6 +33,46 @@ export const alertMessageHTML = `<div class="alert alert-warning">
   <span>Warning: Invalid email address!</span>
 </div>`;
 
+// add/edit task modal
+export const dynamicModal = () => {
+
+}
+
+export const showInfoModal = (title, description, date, priority) => {
+  const infoModalELement = `
+        <dialog id="info_modal" class="modal">
+          <form method="dialog" class="modal-box bg-[#f7f7f5]">
+            <div class="flex flex-col gap-6">
+              <h3 class="font-semibold text-semiBlack text-lg">Task Info</h3>
+              <div class="flex flex-row gap-2 text-semiBlack">
+                <label class="text-semiBlack font-medium w-24 pr-2">Title</label>
+                <h3>${title}</h3>
+              </div>
+
+              <div class="flex flex-row gap-2 text-semiBlack">
+                <label class="text-semiBlack font-medium w-24 pr-2">Description</label>
+                <p>${description}</p>
+              </div>
+
+              <div class="flex flex-row gap-2 text-semiBlack">
+                <label class="text-semiBlack font-medium w-24 pr-2">Due Date</label>
+                <span>${date}</span>
+              </div>
+
+              <div class="flex flex-row gap-2 text-semiBlack">
+                <label class="text-semiBlack font-medium w-24 pr-2">Priority</label>
+                <span>${priority}</span>
+              </div>
+
+            </div>
+          </form>
+          <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+          </form>
+        </dialog>`;
+
+  return infoModalELement;
+}
 
 // dark mode toggle
 export const toggleDarkMode = () => {
