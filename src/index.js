@@ -1,14 +1,16 @@
 // imports
 import './style.css';
-import { toggleDarkMode, timeGreeting, dynamicDate, displayTaskCount, showInfoModal } from './dom.js';
+import { 
+  toggleDarkMode,
+  timeGreeting,
+  dynamicDate,
+  displayTaskCount,
+  showInfoModal,
+  displayAddToDoForm
+} from './dom.js';
 import { ToDo } from './task.js';
 
 // globals
-const $todoForm = document.querySelector("#todo-form")
-const $title = document.querySelector("#title");
-const $description = document.querySelector("#desc");
-const $date = document.querySelector("#date");
-const $priority = document.querySelector("#status");
 const mainContainer = document.querySelector("#main-container");
 const $todoContainer = document.querySelector("#todo-container");
 
@@ -90,19 +92,57 @@ document.addEventListener("click", (e) => {
   feather.replace();
 });
 
-// submit eventlistener todo
-$todoForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const task = new ToDo($title.value, $description.value, $date.value, $priority.value);
-  task.addToDo();
-  ToDo.renderToDo();
-  feather.replace();
-  clearForm();
-  displayTaskCount();
+// generate modal using js
+// manipulate the content for later use (edit usage)
+const addToDoBtn = document.querySelector("#add-todo");
+addToDoBtn.addEventListener("click", () => {
+  const addTaskContent = displayAddToDoForm()
+
+  const previousModal = document.querySelector("#todo_modal");
+  if (previousModal) {
+    previousModal.remove();
+  }
+
+  const addTaskModalContainer = document.createElement("div");
+  addTaskModalContainer.innerHTML = addTaskContent;
+  mainContainer.appendChild(addTaskModalContainer);
+
+  const $todoModal = document.querySelector("#todo_modal");
+  $todoModal.showModal();
+  listenToDoSubmit();
 })
 
+// TODO: make a close modal function of the addTaskModalContainer
+
+// the problem with the reference error was in the clear form, i dont think you need clear form anymore (?)
+
+// submit eventlistener todo
+function listenToDoSubmit()  {
+  const $todoForm = document.querySelector("#todo-form");
+  const $title = document.querySelector("#title");
+  const $description = document.querySelector("#desc");
+  const $date = document.querySelector("#date");
+  const $priority = document.querySelector("#status");
+
+  $todoForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const task = new ToDo($title.value, $description.value, $date.value, $priority.value);
+    task.addToDo();
+    ToDo.renderToDo();
+    feather.replace();
+    // clearForm();
+    // close modal
+    const previousModal = document.querySelector("#todo_modal");
+    if (previousModal) {
+      previousModal.remove();
+    }
+    displayTaskCount();
+  })
+}
+
 // submit eventlistender folder
-const $folderForm = document.querySelector("#folder-form");
+// const $folderForm = document.querySelector("#folder-form");
 // $folderForm.addEventListener("submit", (e) => {
 //   e.preventDefault();
 // })

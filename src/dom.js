@@ -3,17 +3,17 @@ import { ToDo } from "./task.js";
 export const toDoContainer = (title, date, taskIndex) => {
   const toDoElement = `
   <div id="todo-element" class="flex flex-row items-center justify-between border-b border-semiGray py-5">
-    <!-- chekcbox & title -->
+    <!-- checkbox & title -->
     <div class="flex flex-row items-center gap-2">
       <input type="checkbox">
-      <span class="text-semiBlack text-sm font-medium">${title}</span>
+      <span class="text-semiBlack text-sm font-medium dark:text-white">${title}</span>
     </div>
     <!-- details/due date/edit/delete -->
     <div class="flex flex-row items-center gap-4">
-      <span class="text-semiBlack text-sm">${date}</span>
-      <i id="info-btn" data-index="${taskIndex}" data-feather="info" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
-      <i id="edit-btn" data-index="${taskIndex}" data-feather="edit-3" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
-      <i id="del-btn" data-index="${taskIndex}" data-feather="x" class="delete-btn w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2]"></i>
+      <span class="text-semiBlack dark:text-white text-sm">${date}</span>
+      <i id="info-btn" data-index="${taskIndex}" data-feather="info" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
+      <i id="edit-btn" data-index="${taskIndex}" data-feather="edit-3" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
+      <i id="del-btn" data-index="${taskIndex}" data-feather="x" class="delete-btn w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
     </div>
   </div>`;
 
@@ -33,9 +33,50 @@ export const alertMessageHTML = `<div class="alert alert-warning">
   <span>Warning: Invalid email address!</span>
 </div>`;
 
-// add/edit task modal
-export const dynamicModal = () => {
+// add task modal
+export const displayAddToDoForm = () => {
+  const modalElement = `<!-- todo input modal -->
+            <dialog id="todo_modal" class="modal">
+              <form id="todo-form" method="dialog" class="modal-box bg-[#F7F7F5]">
+                <!-- <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-semiBlack dark:text-white">✕</button> -->
+                <div class="flex flex-col gap-6">
+                  <h3 class="font-semibold text-semiBlack text-lg">Add Task</h3>
 
+                  <div class="grid grid-cols-1 gap-4">
+                    <div class="flex flex-col gap-2">
+                      <label for="title" class="text-semiBlack font-medium">Title</label>
+                      <input id="title" type="text" placeholder="Your task" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                      <label for="description" class="text-semiBlack font-medium">Description</label>
+                      <textarea id="desc" placeholder="Describe your task..." class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required></textarea>
+                    </div>
+                    <div class="flex flex-col gap-2 text-black">
+                      <label for="date" class="text-semiBlack font-medium">Due Date</label>
+                      <input type="date" id="date" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                      <label for="status" class="text-semiBlack font-medium">Priority</label>
+                      <select name="status" id="status" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0">
+                        <option value="high">important</option>
+                        <option value="medium">not so important</option>
+                        <option value="low">very not important</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 ml-auto">
+                    <button class="btn" onclick="folder_modal.close()">Cancel</button>
+                    <input type="submit" value="Add" class="btn text-white bg-softGreen px-6 border-none">
+                  </div>
+                </div>
+
+              </form>
+              <form method="dialog" class="modal-backdrop">
+                <button>close</button>
+              </form>
+            </dialog>`;
+
+  return modalElement;
 }
 
 export const showInfoModal = (title, description, date, priority) => {
