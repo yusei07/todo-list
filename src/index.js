@@ -158,7 +158,6 @@ function listenToDoSubmit()  {
     task.addToDo();
     ToDo.renderToDo();
     feather.replace();
-    // clearForm();
     closeModal(document.querySelector("#todo_modal"));
     displayTaskCount();
   })
@@ -188,13 +187,6 @@ const closeModal = (existingModal) => {
     existingModal.remove();
   }
 }
-
-// delete this later
-// function clearForm() {
-//   $title.value = "";
-//   $description.value = "";
-//   $date.value = "";
-// }
 
 // ui functions
 toggleDarkMode();
