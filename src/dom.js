@@ -33,27 +33,27 @@ export const alertMessageHTML = `<div class="alert alert-warning">
   <span>Warning: Invalid email address!</span>
 </div>`;
 
-// add task modal
-export const displayAddToDoForm = () => {
+// add task/edit modal
+export const dynamicModal = (formID, modalTitle, titleInput, descInput, dateInput, buttonValue) => {
   const modalElement = `<!-- todo input modal -->
             <dialog id="todo_modal" class="modal">
-              <form id="todo-form" method="dialog" class="modal-box bg-[#F7F7F5]">
+              <form id="${formID}" method="dialog" class="modal-box bg-[#F7F7F5]">
                 <!-- <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-semiBlack dark:text-white">✕</button> -->
                 <div class="flex flex-col gap-6">
-                  <h3 class="font-semibold text-semiBlack text-lg">Add Task</h3>
+                  <h3 class="font-semibold text-semiBlack text-lg">${modalTitle}</h3>
 
                   <div class="grid grid-cols-1 gap-4">
                     <div class="flex flex-col gap-2">
                       <label for="title" class="text-semiBlack font-medium">Title</label>
-                      <input id="title" type="text" placeholder="Your task" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>
+                      <input value="${titleInput}" id="title" type="text" placeholder="Your task" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>
                     </div>
                     <div class="flex flex-col gap-2">
                       <label for="description" class="text-semiBlack font-medium">Description</label>
-                      <textarea id="desc" placeholder="Describe your task..." class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required></textarea>
+                      <textarea id="desc" placeholder="Describe your task..." class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>${descInput}</textarea>
                     </div>
                     <div class="flex flex-col gap-2 text-black">
                       <label for="date" class="text-semiBlack font-medium">Due Date</label>
-                      <input type="date" id="date" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>
+                      <input value="${dateInput}" type="date" id="date" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>
                     </div>
                     <div class="flex flex-col gap-2">
                       <label for="status" class="text-semiBlack font-medium">Priority</label>
@@ -66,7 +66,7 @@ export const displayAddToDoForm = () => {
                   </div>
                   <div class="flex flex-row items-center gap-2 ml-auto">
                     <button class="btn" onclick="folder_modal.close()">Cancel</button>
-                    <input type="submit" value="Add" class="btn text-white bg-softGreen px-6 border-none">
+                    <input type="submit" value="${buttonValue}" class="btn text-white bg-softGreen px-6 border-none">
                   </div>
                 </div>
 
