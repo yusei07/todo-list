@@ -6,23 +6,36 @@ import {
   dynamicDate,
   displayTaskCount,
   showInfoModal,
-  dynamicModal
+  dynamicModal,
+  folderModal
 } from './dom.js';
+import {
+  defaultHTML
+} from './htmlComponents.js'
 import { ToDo } from './task.js';
 
 // globals
-const mainContainer = document.querySelector("#main-container");
-const $todoContainer = document.querySelector("#todo-container");
+const container = document.querySelector("#content");
+// const $todoContainer = document.querySelector("#todo-container");
 
-
-// on page load
 window.addEventListener("load", () => {
-  // mainContainer.innerHTML = "";
+  // load home page
+  // sidebar
+  // header & top bar 
+  // main default home content
+  container.innerHTML = "";
   // container.insertAdjacentHTML("beforeend", navHTML);
-  // container.insertAdjacentHTML("beforeend", landingHTML);
+  container.insertAdjacentHTML("beforeend", defaultHTML);
 
   // add a bunch of listeners here
   ToDo.renderToDo(); // load previous stored local storage tasks
+  todoAdd();
+  folderAdd();
+
+  // ui functions
+  toggleDarkMode();
+  timeGreeting();
+  dynamicDate();
   displayTaskCount();
   feather.replace();
 })
@@ -105,7 +118,7 @@ document.addEventListener("click", (e) => {
   feather.replace();
 });
 
-// bug: im not getting the value of the edited title from the input
+// edit submit listener & handler
 function listenEditSubmit(taskTarget) {
   const editFormDOM = getFormDOM();
   const $editToDoForm = document.querySelector("#edit-todo-form");
@@ -128,22 +141,27 @@ function listenEditSubmit(taskTarget) {
   })
 }
 
-const addToDoBtn = document.querySelector("#add-todo");
-addToDoBtn.addEventListener("click", () => {
-  const addTaskContent = dynamicModal("add-todo-form", "Add Task", "", "", "", "Add");
+// todo btn
+const todoAdd = () => {
+  const addToDoBtn = document.querySelector("#add-todo");
+  const mainContainer = document.querySelector("#main-container");
 
-  closeModal(document.querySelector("#todo_modal"));
+  addToDoBtn.addEventListener("click", () => {
+    const addTaskContent = dynamicModal("add-todo-form", "Add Task", "", "", "", "Add");
 
-  const addTaskModalContainer = document.createElement("div");
-  // call daisy ui method (showModal)
-  addTaskModalContainer.innerHTML = addTaskContent;
-  mainContainer.appendChild(addTaskModalContainer);
+    closeModal(document.querySelector("#todo_modal"));
 
-  const $todoModal = document.querySelector("#todo_modal");
-  // call daisy ui method (showModal)
-  $todoModal.showModal();
-  listenToDoSubmit();
-})
+    const addTaskModalContainer = document.createElement("div");
+    // call daisy ui method (showModal)
+    addTaskModalContainer.innerHTML = addTaskContent;
+    mainContainer.appendChild(addTaskModalContainer);
+
+    const $todoModal = document.querySelector("#todo_modal");
+    // call daisy ui method (showModal)
+    $todoModal.showModal();
+    listenToDoSubmit();
+  })
+}
 
 // submit eventlistener todo
 function listenToDoSubmit()  {
@@ -163,6 +181,56 @@ function listenToDoSubmit()  {
   })
 }
 
+// folder add btn
+const folderAdd = () => {
+  const folderPlusBtn = document.querySelector("#add-folder");
+  folderPlusBtn.addEventListener("click", () => {
+    const folderModalContent = folderModal();
+
+    closeModal(document.querySelector("#folder_modal"));
+
+    const formModalContainer = document.createElement("div");
+    formModalContainer.innerHTML = folderModalContent;
+    document.body.appendChild(formModalContainer);
+
+    document.querySelector("#folder_modal").showModal();
+
+    listenFolderSubmit();
+  })
+}
+
+// submit eventlistener folder
+function listenFolderSubmit() {
+  const $folderForm = document.querySelector("#folder-form");
+
+  $folderForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    console.log("")
+  })
+}
+
+// check/complete toggle
+document.addEventListener("change", (e) => {
+  // Check if the changed element is an input with the id "check-btn"
+  if (e.target.id === "check-btn" && e.target.type === "checkbox") {
+    // toggle complete
+    const currentIndex = e.target.getAttribute("data-index");
+    const currentTaskIndex = ToDo.tasksArray[currentIndex];
+
+    currentTaskIndex.complete = true;
+    // select the next sibling element (the <span> in this case)
+    const spanElement = e.target.nextElementSibling;
+
+    if (spanElement) {
+      if (e.target.checked) {
+        spanElement.innerHTML = `<strike>${spanElement.textContent}</strike>`;
+      } else {
+        spanElement.innerHTML = spanElement.textContent;
+      }
+    }
+  }
+});
+
 const getFormDOM = () => {
   const $title = document.querySelector("#title");
   const $description = document.querySelector("#desc");
@@ -176,20 +244,8 @@ const getFormDOM = () => {
   };
 }
 
-// submit eventlistender folder
-// const $folderForm = document.querySelector("#folder-form");
-// $folderForm.addEventListener("submit", (e) => {
-//   e.preventDefault();
-// })
-
 const closeModal = (existingModal) => {
   if (existingModal) {
     existingModal.remove();
   }
 }
-
-// ui functions
-toggleDarkMode();
-timeGreeting();
-dynamicDate();
-displayTaskCount();
