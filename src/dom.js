@@ -2,31 +2,62 @@ import { ToDo } from "./task.js";
 
 export const toDoContainer = (title, date, taskIndex) => {
   const toDoElement = `
-  <div id="todo-element" class="flex flex-row items-center justify-between border-b border-semiGray py-5">
+  <div id="todo-element-${taskIndex}" class="flex flex-row items-center justify-between border-b border-semiGray py-5">
     <!-- checkbox & title -->
     <div class="flex flex-row items-center gap-2">
-      <input type="checkbox">
-      <span class="text-semiBlack text-sm font-medium dark:text-white">${title}</span>
+      <input type="checkbox" id="check-btn" data-index="${taskIndex}" autocomplete="off">
+      <span id="task-title" class="text-semiBlack text-sm font-medium dark:text-white">${title}</span>
     </div>
     <!-- details/due date/edit/delete -->
     <div class="flex flex-row items-center gap-4">
       <span class="text-semiBlack dark:text-white text-sm">${date}</span>
-      <i id="info-btn" data-index="${taskIndex}" data-feather="info" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
-      <i id="edit-btn" data-index="${taskIndex}" data-feather="edit-3" class="w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
-      <i id="del-btn" data-index="${taskIndex}" data-feather="x" class="delete-btn w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
+      <i id="info-btn" data-index="${taskIndex}" data-feather="info" class="cursor-pointer w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
+      <i id="edit-btn" data-index="${taskIndex}" data-feather="edit-3" class="cursor-pointer w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
+      <i id="del-btn" data-index="${taskIndex}" data-feather="x" class="delete-btn cursor-pointer w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
     </div>
   </div>`;
 
   return toDoElement;
 }
 
-export const folderHTML = `<div class="rounded-md hover:bg-semiGray transition duration-300 px-4 py-2 font-medium text-md text-secondary flex flex-row items-center gap-2 justify-between">
+export const folderHTML = (title) => {
+  const folderElement = `<div class="rounded-md hover:bg-semiGray transition duration-300 px-4 py-2 font-medium text-md text-secondary flex flex-row items-center gap-2 justify-between">
               <div class="flex flex-row items-center gap-2">
                 <i data-feather="folder" class="w-4 h-4 text-secondary stroke-[2]"></i>
-                <span>acads</span>
+                <span>${title}</span>
               </div>
               <i data-feather="trash-2" class="w-4 h-4 text-secondary stroke-[2]"></i>
             </div>`;
+
+  return folderElement;
+}
+
+export const folderModal = () => {
+  const folderModalElement = `<!-- folder input modal -->
+        <dialog id="folder_modal" class="modal">
+          <form id="folder-form" method="dialog" class="modal-box bg-[#F7F7F5]">
+            <!-- <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-semiBlack dark:text-white">✕</button> -->
+            <div class="flex flex-col gap-6">
+              <h3 class="font-semibold text-semiBlack text-lg">Add Folder</h3>
+              <div class="flex flex-col gap-2">
+                <label for="title" class="text-semiBlack font-medium">Title</label>
+                <input id="folder-title" type="text" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>
+              </div>
+
+              <div class="flex flex-row items-center gap-2 ml-auto">
+                <button class="btn" onclick="folder_modal.close()">Cancel</button>
+                <input type="submit" value="Add" class="btn text-white bg-softGreen px-6 border-none">
+              </div>
+            </div>
+
+          </form>
+          <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+          </form>
+        </dialog>`;
+
+  return folderModalElement;
+}
 
 export const alertMessageHTML = `<div class="alert alert-warning">
   <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
