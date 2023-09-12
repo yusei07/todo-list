@@ -5,7 +5,7 @@ export const toDoContainer = (title, date, taskIndex) => {
   <div id="todo-element-${taskIndex}" class="flex flex-row items-center justify-between border-b border-semiGray py-5">
     <!-- checkbox & title -->
     <div class="flex flex-row items-center gap-2">
-      <input type="checkbox" id="check-btn" data-index="${taskIndex}" autocomplete="off">
+      <input type="checkbox" id="${taskIndex}" class="check-btn" data-index="${taskIndex}" autocomplete="off">
       <span id="task-title" class="text-semiBlack text-sm font-medium dark:text-white">${title}</span>
     </div>
     <!-- details/due date/edit/delete -->
@@ -26,7 +26,10 @@ export const folderHTML = (title) => {
                 <i data-feather="folder" class="w-4 h-4 text-secondary stroke-[2]"></i>
                 <span>${title}</span>
               </div>
-              <i data-feather="trash-2" class="w-4 h-4 text-secondary stroke-[2]"></i>
+              <div class="flex flex-row items-center gap-2">
+                <i data-feather="edit" id="folder-edit-btn" class="cursor-pointer hover:text-semiBlack transition duration-300 w-4 h-4 text-secondary stroke-[2]"></i>
+                <i data-feather="trash-2" id="folder-del-btn" class="cursor-poitner hover:text-semiBlack transition duration-300 w-4 h-4 text-secondary stroke-[2]"></i>
+              </div>
             </div>`;
 
   return folderElement;

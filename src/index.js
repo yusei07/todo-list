@@ -13,6 +13,8 @@ import {
   defaultHTML
 } from './htmlComponents.js'
 import { ToDo } from './task.js';
+import { Folder } from './folder.js';
+import { displayComplete } from './handlers.js';
 
 // globals
 const container = document.querySelector("#content");
@@ -27,8 +29,11 @@ window.addEventListener("load", () => {
   // container.insertAdjacentHTML("beforeend", navHTML);
   container.insertAdjacentHTML("beforeend", defaultHTML);
 
+  // load previous stored local storage tasks/folders
+  ToDo.renderToDo(); 
+  Folder.renderFolders();
+
   // add a bunch of listeners here
-  ToDo.renderToDo(); // load previous stored local storage tasks
   todoAdd();
   folderAdd();
 
@@ -37,29 +42,36 @@ window.addEventListener("load", () => {
   timeGreeting();
   dynamicDate();
   displayTaskCount();
+
+  displayComplete(); // completed page
+  // displayTaskCheck();
+  checkCheckboxState();
+
   feather.replace();
 })
 
 // page handler 
-// container.addEventListener("click", (e) => {
-//   if (e.target.id === "home") {
-//     // clear previous html and classes
-//     container.innerHTML = "";
-//     container.insertAdjacentHTML("beforeend", navHTML);
-//     container.insertAdjacentHTML("beforeend", landingHTML);
-//     menuSmListener();
-//     feather.replace();
-//   } else if (e.target.id === "menu") {
-//     displayMenu(container);
-//     menuSmListener();
-//   } else if (e.target.id === "story") {
-//     displayStory(container);
-//     menuSmListener();
-//   } else if (e.target.id === "contact") {
-//     displayContact(container);
-//     menuSmListener();
-//   }
-// })
+container.addEventListener("click", (e) => {
+  if (e.target.id === "home-page") {
+    // clear previous html and classes
+    container.innerHTML = "";
+    container.insertAdjacentHTML("beforeend", navHTML);
+    container.insertAdjacentHTML("beforeend", landingHTML);
+    menuSmListener();
+    feather.replace();
+  } else if (e.target.id === "today-page") {
+    displayMenu(container);
+    menuSmListener();
+  } else if (e.target.id === "week-page") {
+    displayStory(container);
+    menuSmListener();
+  } else if (e.target.id === "important-page") {
+    displayContact(container);
+    menuSmListener();
+  } else if (e.target.id === "completed-page") {
+    displayCompletedPage()
+  }
+})
 
 // todo features handler
 document.addEventListener("click", (e) => {
@@ -90,7 +102,6 @@ document.addEventListener("click", (e) => {
     $todoModal.showModal();
     listenEditSubmit(currentEditTask);
   }
-
 
   // info
   if (e.target.id === "info-btn") {
@@ -202,34 +213,73 @@ const folderAdd = () => {
 // submit eventlistener folder
 function listenFolderSubmit() {
   const $folderForm = document.querySelector("#folder-form");
+  const folderTitle = document.querySelector("#folder-title");
 
   $folderForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    console.log("")
+
+    const folder = new Folder(folderTitle.value);
+    console.log(folderTitle.value);
+    folder.addFolder();
+    closeModal(document.querySelector("#folder_modal"));
+    Folder.renderFolders();
+    feather.replace();
   })
 }
 
-// check/complete toggle
+const saveCheckboxState = (checkboxId, isChecked) => {
+  localStorage.setItem(checkboxId, isChecked); // e.g  1 : true
+}
+
+const loadCheckboxState = (checkboxId) => {
+  const isChecked = localStorage.getItem(checkboxId);
+  if (isChecked === "true") {
+    const checkbox = document.getElementById(checkboxId);
+    const spanElement = checkbox.nextElementSibling;
+
+    if (checkbox) {
+      checkbox.checked = true; // check the checkbox
+    }
+
+    if (spanElement) {
+      spanElement.innerHTML = `<strike>${spanElement.textContent}</strike>`; // apply strike-through
+    }
+  }
+}
+
+// event listener for chckbox change
 document.addEventListener("change", (e) => {
   // Check if the changed element is an input with the id "check-btn"
-  if (e.target.id === "check-btn" && e.target.type === "checkbox") {
+  if (e.target.classList.contains("check-btn")  && e.target.type === "checkbox") {
     // toggle complete
     const currentIndex = e.target.getAttribute("data-index");
     const currentTaskIndex = ToDo.tasksArray[currentIndex];
+    const currentId = currentIndex;
 
-    currentTaskIndex.complete = true;
-    // select the next sibling element (the <span> in this case)
+    // select the span (title span)
     const spanElement = e.target.nextElementSibling;
 
     if (spanElement) {
       if (e.target.checked) {
+        currentTaskIndex.completed = true;
         spanElement.innerHTML = `<strike>${spanElement.textContent}</strike>`;
       } else {
+        currentTaskIndex.completed = false;
         spanElement.innerHTML = spanElement.textContent;
       }
     }
+
+    saveCheckboxState(currentId, currentTaskIndex.completed);
+    localStorage.setItem("tasks", JSON.stringify(ToDo.tasksArray)); // update task date in local storage 
   }
 });
+
+const checkCheckboxState = () => {
+  const allTask = document.querySelectorAll('#todo-container input[type="checkbox"]');
+  allTask.forEach(checkbox => {
+    loadCheckboxState(checkbox.id);
+  })
+}
 
 const getFormDOM = () => {
   const $title = document.querySelector("#title");
