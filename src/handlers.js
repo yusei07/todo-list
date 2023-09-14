@@ -1,4 +1,5 @@
 import { ToDo } from './task.js';
+import { format, startOfWeek, endOfWeek, isWithinInterval } from 'date-fns';
 
 export const saveCheckboxState = (checkboxId, isChecked) => {
   localStorage.setItem(checkboxId, isChecked); // e.g  1 : true
@@ -55,25 +56,73 @@ export const checkCheckboxState = () => {
   })
 }
 
-const $todoContainer = document.querySelector("#todo-container");
 // handle status -> important & completed
 
-export function loadCompletedTasks() {
+export const getCompletedTasks = () => {
   // init complete arr
   const arrCompleted = [];
 
   for (let i = 0; i < ToDo.tasksArray.length; i++) {
     if (ToDo.tasksArray[i].completed === true) {
       arrCompleted.push(ToDo.tasksArray[i]);
-      console.log("completed array", arrCompleted)
-      // console.log("completed task:", ToDo.tasksArray[i]);
+      // console.log("completed array", arrCompleted)
     }
   }
+
+  return arrCompleted;
 }
 
-// export function loadImportantTasks() {
-//
-// }
+export const completedTaskCount = () => {
+  return getCompletedTasks().length;
+}
 
+export function getImportantTasks() {
+  const arrImportant = [];
+
+  for (let i = 0; i < ToDo.tasksArray.length; i++) {
+    if (ToDo.tasksArray[i].priority === "high") {
+      arrImportant.push(ToDo.tasksArray[i]);
+      console.log(arrImportant);
+    }
+  }
+
+  return arrImportant;
+}
 
 // handle filter -> today & this week
+
+export const getToday = () => {
+  const arrToday = [];
+
+  // get todays date
+  const today = new Date();
+  const formattedToday = format(today, 'yyyy-MM-dd');
+
+  // compare today's date with all obj date inside the arr
+  for (let i = 0; i < ToDo.tasksArray.length; i++) {
+    if (ToDo.tasksArray[i].dueDate === formattedToday) {
+      arrToday.push(ToDo.tasksArray[i]);
+    }
+  }
+
+  return arrToday;
+}
+
+export const getThisWeek = (tasks) => {
+  const currentWeekTasks = [];
+
+  // Get the start and end dates for the current week
+  const today = new Date();
+  const startOfCurrentWeek = startOfWeek(today);
+  const endOfCurrentWeek = endOfWeek(today);
+
+  // Iterate through tasks and filter those within the current week
+  tasks.forEach((task) => {
+    const taskDate = new Date(task.dueDate); // Assuming each task has a "date" property
+    if (isWithinInterval(taskDate, { start: startOfCurrentWeek, end: endOfCurrentWeek })) {
+      currentWeekTasks.push(task);
+    }
+  });
+
+  return currentWeekTasks;
+};
