@@ -1,12 +1,15 @@
 import { ToDo } from './task.js';
-import { getCompletedTasks, completedTaskCount, checkCheckboxState, getImportantTasks, getToday, getThisWeek } from './handlers.js';
-import { displayTaskCount } from './dom.js';
+import { getCompletedTasks, completedTaskCount, getImportantTasks, getToday, getThisWeek } from './handlers.js';
+import { displayTaskCount, highlightCurrentTab } from './dom.js';
 
 // const todoContainer = document.querySelector("#todo-container");
 
 export const loadHome = (container) => {
-  document.querySelector("#home-page").addEventListener("click", () => {
+  const homePage = document.querySelector("#home-page");
+  homePage.addEventListener("click", () => {
     container.innerHTML = "";
+    highlightCurrentTab(homePage);
+    displayToDoAddBtn();
     ToDo.renderToDo("todo-container", ToDo.tasksArray)
     displayTaskCount(ToDo.taskCount);
     // feather.replace();
@@ -14,8 +17,11 @@ export const loadHome = (container) => {
 }
 
 export const loadToday = (container) => {
-  document.querySelector("#today-page").addEventListener("click", () => {
+  const todayPage = document.querySelector("#today-page");
+  todayPage.addEventListener("click", () => {
     container.innerHTML = "";
+    highlightCurrentTab(todayPage);
+    removeToDoAddBtn();
     const todayTasks = getToday();
     ToDo.renderToDo("todo-container", todayTasks)
     displayTaskCount(todayTasks.length);
@@ -23,8 +29,11 @@ export const loadToday = (container) => {
 }
 
 export const loadThisWeek = (container) => {
-  document.querySelector("#week-page").addEventListener("click", () => {
+  const weekPage = document.querySelector("#week-page");
+  weekPage.addEventListener("click", () => {
     container.innerHTML = "";
+    highlightCurrentTab(weekPage);
+    removeToDoAddBtn();
     const thisWeekTasks = getThisWeek(ToDo.tasksArray);
     ToDo.renderToDo("todo-container", thisWeekTasks)
     displayTaskCount(thisWeekTasks.length);
@@ -32,18 +41,25 @@ export const loadThisWeek = (container) => {
 }
 
 export const loadImportant = (container) => {
-  document.querySelector("#important-page").addEventListener("click", () => {
+  const importantPage = document.querySelector("#important-page");
+  importantPage.addEventListener("click", () => {
+    highlightCurrentTab(importantPage);
     container.innerHTML = "";
+    removeToDoAddBtn();
     const importantTasks = getImportantTasks();
     ToDo.renderToDo("todo-container", importantTasks) // make the getImportantTasks function
     displayTaskCount(importantTasks.length);
   })
 }
 
+// TODO: when the user clicks on the checbox again, rerender the todo again of completed tasks
 export const loadCompleted = (container) => {
-  document.querySelector("#completed-page").addEventListener("click", () => {
+  const completedPage = document.querySelector("#completed-page");
+  completedPage.addEventListener("click", () => {
     // clear the task container content
     container.innerHTML = "";
+    highlightCurrentTab(completedPage);
+    removeToDoAddBtn();
     // load completed tasks
     const completedTasks = getCompletedTasks();
     ToDo.renderToDo("todo-container", completedTasks)
@@ -62,7 +78,16 @@ export const loadCompleted = (container) => {
   })
 }
 
-// export const displayCurrentFolder = (container) => {}
+const removeToDoAddBtn = () => {
+  const addBtn = document.querySelector("#add-todo");
+  addBtn.classList.add('hidden');
+}
+
+const displayToDoAddBtn = () => {
+  const addBtn = document.querySelector("#add-todo");
+  addBtn.classList.remove('hidden');
+}
+
 // export const displayNotes = (container) => {}
 
 // get main content dom
