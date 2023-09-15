@@ -168,7 +168,7 @@ export const timeGreeting = () => {
   const currentGreetTime = greetings[index];
 
   const greetTextEl = document.querySelector("#subtext");
-  greetTextEl.innerText = `Hey there! ${currentGreetTime}, hope you're doing well >_<`
+  greetTextEl.innerText = `Hey there! ${currentGreetTime}, Hope you're doing well >_<`
 }
 
 // dynamic date
@@ -178,10 +178,11 @@ export const dynamicDate = () => {
   currentDateEl.innerText = getCurrentDate
 }
 
+// TODO: make it reusable, so it can be used on diff pages to display the task count
 // display task count
-export const displayTaskCount = () => {
+export const displayTaskCount = (taskCount) => {
   const $totalTask = document.querySelector("#total-task");
-  $totalTask.innerText = `Tasks (${ToDo.taskCount})`
+  $totalTask.innerText = `Tasks (${taskCount})`
 }
 
 // display alert msg
@@ -196,3 +197,13 @@ export const displayTaskCount = () => {
 //   $drawer.parentNode.classList.add("lg:drawer-close");
 // })
 
+// remove highlight from all the tabs with the same class name
+// get the current clicked element id and add the class style of current folder to it
+export const highlightCurrentTab = (currentElementClicked) => {
+  const allTabs = document.querySelectorAll(".folder");
+  allTabs.forEach(tab => {
+    tab.classList.remove('bg-tabHighlight', 'text-semiPink');
+  });
+
+  currentElementClicked.classList.add('bg-tabHighlight', 'text-semiPink');
+}
