@@ -14,11 +14,11 @@ import {
 } from './htmlComponents.js'
 import { ToDo } from './task.js';
 import { Folder } from './folder.js';
-import { displayComplete } from './handlers.js';
+import { checkboxListener } from './handlers.js';
+import { loadHome, loadToday, loadThisWeek, loadImportant, loadCompleted } from './loadTabs';
 
 // globals
 const container = document.querySelector("#content");
-// const $todoContainer = document.querySelector("#todo-container");
 
 window.addEventListener("load", () => {
   // load home page
@@ -30,47 +30,31 @@ window.addEventListener("load", () => {
   container.insertAdjacentHTML("beforeend", defaultHTML);
 
   // load previous stored local storage tasks/folders
-  ToDo.renderToDo(); 
+  ToDo.renderToDo("todo-container", ToDo.tasksArray);
   Folder.renderFolders();
 
-  // add a bunch of listeners here
-  todoAdd();
+  // task & folder event listener
+  todoAdd(ToDo.tasksArray, "tasks", ToDo.tasksArray);
   folderAdd();
+  folderListener();
+  console.log(Folder.folderTasks);
 
   // ui functions
   toggleDarkMode();
   timeGreeting();
   dynamicDate();
-  displayTaskCount();
+  displayTaskCount(ToDo.taskCount);
 
-  displayComplete(); // completed page
+  // page event listeners
+  loadHome(document.querySelector("#todo-container"));
+  loadToday(document.querySelector("#todo-container"));
+  loadThisWeek(document.querySelector("#todo-container"));
+  loadImportant(document.querySelector("#todo-container"));
+  loadCompleted(document.querySelector("#todo-container"));
+
   // displayTaskCheck();
-  checkCheckboxState();
 
   feather.replace();
-})
-
-// page handler 
-container.addEventListener("click", (e) => {
-  if (e.target.id === "home-page") {
-    // clear previous html and classes
-    container.innerHTML = "";
-    container.insertAdjacentHTML("beforeend", navHTML);
-    container.insertAdjacentHTML("beforeend", landingHTML);
-    menuSmListener();
-    feather.replace();
-  } else if (e.target.id === "today-page") {
-    displayMenu(container);
-    menuSmListener();
-  } else if (e.target.id === "week-page") {
-    displayStory(container);
-    menuSmListener();
-  } else if (e.target.id === "important-page") {
-    displayContact(container);
-    menuSmListener();
-  } else if (e.target.id === "completed-page") {
-    displayCompletedPage()
-  }
 })
 
 // todo features handler
@@ -80,6 +64,8 @@ document.addEventListener("click", (e) => {
     const delTaskIndex = e.target.getAttribute("data-index");
     // console.log(taskIndex);
     ToDo.delete(delTaskIndex);
+    localStorage.removeItem(delTaskIndex); // remove checked id (so the next added task wont get checked)
+    displayTaskCount(ToDo.taskCount);
   }
 
   // edit
@@ -125,7 +111,8 @@ document.addEventListener("click", (e) => {
     $infoModal.showModal();
   }
 
-  displayTaskCount();
+  // if the displayCount is enabled here it will override the taskcount of other taskcount (e.g the completed task)
+  // displayTaskCount(ToDo.taskCount);
   feather.replace();
 });
 
@@ -146,14 +133,14 @@ function listenEditSubmit(taskTarget) {
 
     localStorage.setItem("tasks", JSON.stringify(ToDo.tasksArray));
 
-    ToDo.renderToDo();
+    ToDo.renderToDo("todo-container", ToDo.tasksArray);
     feather.replace();
     closeModal(document.querySelector("#todo_modal"));
   })
 }
 
 // todo btn
-const todoAdd = () => {
+const todoAdd = (array, key, optionalArray) => {
   const addToDoBtn = document.querySelector("#add-todo");
   const mainContainer = document.querySelector("#main-container");
 
@@ -170,25 +157,28 @@ const todoAdd = () => {
     const $todoModal = document.querySelector("#todo_modal");
     // call daisy ui method (showModal)
     $todoModal.showModal();
-    listenToDoSubmit();
+    console.log(array, key, optionalArray);
+    listenToDoSubmit(array, key, optionalArray);
   })
 }
 
 // submit eventlistener todo
-function listenToDoSubmit()  {
+function listenToDoSubmit(array, key, optionalArray)  {
   const addFormDOM = getFormDOM();
   const $addToDoForm = document.querySelector("#add-todo-form");
 
   $addToDoForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // const task = new ToDo($title.value, $description.value, $date.value, $priority.value);
     const task = new ToDo(addFormDOM.$title.value, addFormDOM.$description.value, addFormDOM.$date.value, addFormDOM.$priority.value);
-    task.addToDo();
-    ToDo.renderToDo();
+
+    task.addToDo(array, key, optionalArray); // adds task to desired array
+    // localStorage.setItem(key, JSON.stringify(array))
+
+    ToDo.renderToDo("todo-container", ToDo.tasksArray);
     feather.replace();
     closeModal(document.querySelector("#todo_modal"));
-    displayTaskCount();
+    displayTaskCount(ToDo.taskCount);
   })
 }
 
@@ -196,7 +186,7 @@ function listenToDoSubmit()  {
 const folderAdd = () => {
   const folderPlusBtn = document.querySelector("#add-folder");
   folderPlusBtn.addEventListener("click", () => {
-    const folderModalContent = folderModal();
+    const folderModalContent = folderModal("Add Folder", "");
 
     closeModal(document.querySelector("#folder_modal"));
 
@@ -227,59 +217,72 @@ function listenFolderSubmit() {
   })
 }
 
-const saveCheckboxState = (checkboxId, isChecked) => {
-  localStorage.setItem(checkboxId, isChecked); // e.g  1 : true
-}
+const folderListener = () => {
+  document.querySelector("#folder-container").addEventListener("click", (e) => {
+    // edit btn
+    if (e.target.id === "folder-edit-btn") {
+      const folderIndex = e.target.getAttribute("folder-data-index");
+      const currentFolderIndex = Folder.foldersArray[folderIndex];
 
-const loadCheckboxState = (checkboxId) => {
-  const isChecked = localStorage.getItem(checkboxId);
-  if (isChecked === "true") {
-    const checkbox = document.getElementById(checkboxId);
-    const spanElement = checkbox.nextElementSibling;
+      // assign value to modal
+      const folderEditContent = folderModal("Edit Folder", currentFolderIndex.title);
+      
+      // close previous modal
+      closeModal(document.querySelector("#folder_modal"));
+      // create div el append the el to body
+      const formModalContainer = document.createElement("div");
+      formModalContainer.innerHTML = folderEditContent;
+      document.body.appendChild(formModalContainer);
 
-    if (checkbox) {
-      checkbox.checked = true; // check the checkbox
+      // show the modal
+      document.querySelector("#folder_modal").showModal();
+
+      // listen for submit
+      editFolderSubmit(currentFolderIndex);
     }
 
-    if (spanElement) {
-      spanElement.innerHTML = `<strike>${spanElement.textContent}</strike>`; // apply strike-through
-    }
-  }
-}
-
-// event listener for chckbox change
-document.addEventListener("change", (e) => {
-  // Check if the changed element is an input with the id "check-btn"
-  if (e.target.classList.contains("check-btn")  && e.target.type === "checkbox") {
-    // toggle complete
-    const currentIndex = e.target.getAttribute("data-index");
-    const currentTaskIndex = ToDo.tasksArray[currentIndex];
-    const currentId = currentIndex;
-
-    // select the span (title span)
-    const spanElement = e.target.nextElementSibling;
-
-    if (spanElement) {
-      if (e.target.checked) {
-        currentTaskIndex.completed = true;
-        spanElement.innerHTML = `<strike>${spanElement.textContent}</strike>`;
-      } else {
-        currentTaskIndex.completed = false;
-        spanElement.innerHTML = spanElement.textContent;
-      }
+    // del btn
+    if (e.target.id === "folder-del-btn") {
+      const folderIndex = e.target.getAttribute("folder-data-index");
+      // const currentFolderIndex = Folder.foldersArray[folderIndex];
+      Folder.deleteFolder(folderIndex);
+      // Folder.folderTasks.remove(folderIndex);
     }
 
-    saveCheckboxState(currentId, currentTaskIndex.completed);
-    localStorage.setItem("tasks", JSON.stringify(ToDo.tasksArray)); // update task date in local storage 
-  }
-});
+    // display tasks inside current folder 
+    if (e.target.id === "folder-element") {
+      // get the index
+      const folderIndex = e.target.getAttribute("folder-data-index");
+      const currentFolderTasks = Folder.folderTasks[folderIndex];
+      ToDo.renderToDo("todo-container", currentFolderTasks);
 
-const checkCheckboxState = () => {
-  const allTask = document.querySelectorAll('#todo-container input[type="checkbox"]');
-  allTask.forEach(checkbox => {
-    loadCheckboxState(checkbox.id);
+      todoAdd(currentFolderTasks, "folder-task", Folder.folderTasks);
+      // assign the corresponding display task count
+      displayTaskCount(currentFolderTasks.length);
+      feather.replace();
+    }
+
   })
 }
+
+const editFolderSubmit = (folderTarget) => {
+  const $folderForm = document.querySelector("#folder-form");
+
+  $folderForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const editInputTitle = $folderForm.querySelector("#folder-title");
+    folderTarget.title = editInputTitle.value || folderTarget.title;
+
+    localStorage.setItem("folders", JSON.stringify(Folder.foldersArray));
+
+    Folder.renderFolders()
+    feather.replace();
+    closeModal(document.querySelector("#folder_modal"));
+  })
+}
+
+// event listener for checkbox change
+checkboxListener();
 
 const getFormDOM = () => {
   const $title = document.querySelector("#title");
@@ -299,3 +302,4 @@ const closeModal = (existingModal) => {
     existingModal.remove();
   }
 }
+
