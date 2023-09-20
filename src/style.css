@@ -6,6 +6,16 @@
   [type='checkbox'] {
     @apply w-4 h-4 bg-transparent checked:bg-semiPink text-semiPink rounded-md border border-semiBlack dark:border-white focus:ring-0;
   }
+
+  [type="date"] {
+    @apply appearance-none text-semiBlack dark:text-white;
+  }
+
+/* Style the calendar icon (this is browser-specific) */
+  [type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+
 }
 
 @layer components {
