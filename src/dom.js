@@ -20,31 +20,31 @@ export const toDoContainer = (title, date, taskIndex) => {
   return toDoElement;
 }
 
-export const folderHTML = (title) => {
-  const folderElement = `<div class="rounded-md hover:bg-semiGray transition duration-300 px-4 py-2 font-medium text-md text-secondary flex flex-row items-center gap-2 justify-between">
+export const folderHTML = (title, folderIndex) => {
+  const folderElement = `<div id="folder-element" class="folder rounded-md hover:bg-semiGray transition duration-300 px-4 py-2 font-medium text-md text-secondary flex flex-row items-center gap-2 justify-between" folder-data-index="${folderIndex}">
               <div class="flex flex-row items-center gap-2">
                 <i data-feather="folder" class="w-4 h-4 text-secondary stroke-[2]"></i>
                 <span>${title}</span>
               </div>
               <div class="flex flex-row items-center gap-2">
-                <i data-feather="edit" id="folder-edit-btn" class="cursor-pointer hover:text-semiBlack transition duration-300 w-4 h-4 text-secondary stroke-[2]"></i>
-                <i data-feather="trash-2" id="folder-del-btn" class="cursor-poitner hover:text-semiBlack transition duration-300 w-4 h-4 text-secondary stroke-[2]"></i>
+                <i data-feather="edit" id="folder-edit-btn" class="cursor-pointer hover:text-semiBlack transition duration-300 w-4 h-4 text-secondary stroke-[2]" folder-data-index="${folderIndex}"></i>
+                <i data-feather="trash-2" id="folder-del-btn" class="cursor-poitner hover:text-semiBlack transition duration-300 w-4 h-4 text-secondary stroke-[2]" folder-data-index="${folderIndex}"></i>
               </div>
             </div>`;
 
   return folderElement;
 }
 
-export const folderModal = () => {
+export const folderModal = (folderTitle, inputTitle) => {
   const folderModalElement = `<!-- folder input modal -->
         <dialog id="folder_modal" class="modal">
-          <form id="folder-form" method="dialog" class="modal-box bg-[#F7F7F5]">
+          <form id="folder-form" method="dialog" class="modal-box bg-[#F7F7F5] dark:bg-[#202020]">
             <!-- <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-semiBlack dark:text-white">✕</button> -->
             <div class="flex flex-col gap-6">
-              <h3 class="font-semibold text-semiBlack text-lg">Add Folder</h3>
+              <h3 class="font-semibold text-semiBlack dark:text-white text-lg">${folderTitle}</h3>
               <div class="flex flex-col gap-2">
-                <label for="title" class="text-semiBlack font-medium">Title</label>
-                <input id="folder-title" type="text" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>
+                <label for="title" class="text-semiBlack dark:text-white font-medium">Title</label>
+                <input id="folder-title" type="text" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0 dark:text-white" value="${inputTitle}" required>
               </div>
 
               <div class="flex flex-row items-center gap-2 ml-auto">
@@ -71,27 +71,27 @@ export const alertMessageHTML = `<div class="alert alert-warning">
 export const dynamicModal = (formID, modalTitle, titleInput, descInput, dateInput, buttonValue) => {
   const modalElement = `<!-- todo input modal -->
             <dialog id="todo_modal" class="modal">
-              <form id="${formID}" method="dialog" class="modal-box bg-[#F7F7F5]">
+              <form id="${formID}" method="dialog" class="modal-box bg-[#F7F7F5] dark:bg-[#202020] text-semiBlack dark:text-white">
                 <!-- <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-semiBlack dark:text-white">✕</button> -->
                 <div class="flex flex-col gap-6">
-                  <h3 class="font-semibold text-semiBlack text-lg">${modalTitle}</h3>
+                  <h3 class="font-semibold text-lg">${modalTitle}</h3>
 
                   <div class="grid grid-cols-1 gap-4">
                     <div class="flex flex-col gap-2">
-                      <label for="title" class="text-semiBlack font-medium">Title</label>
-                      <input value="${titleInput}" id="title" type="text" placeholder="Your task" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>
+                      <label for="title" class="font-medium">Title</label>
+                      <input value="${titleInput}" id="title" type="text" placeholder="Your task" class="border border-semiGray rounded-md bg-transparent pl-2 focus:ring-0" required>
                     </div>
                     <div class="flex flex-col gap-2">
-                      <label for="description" class="text-semiBlack font-medium">Description</label>
-                      <textarea id="desc" placeholder="Describe your task..." class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>${descInput}</textarea>
-                    </div>
-                    <div class="flex flex-col gap-2 text-black">
-                      <label for="date" class="text-semiBlack font-medium">Due Date</label>
-                      <input value="${dateInput}" type="date" id="date" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0" required>
+                      <label for="description" class="font-medium">Description</label>
+                      <textarea id="desc" placeholder="Describe your task..." class="border border-semiGray rounded-md bg-transparent pl-2 focus:ring-0" required>${descInput}</textarea>
                     </div>
                     <div class="flex flex-col gap-2">
-                      <label for="status" class="text-semiBlack font-medium">Priority</label>
-                      <select name="status" id="status" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0">
+                      <label for="date" class="font-medium">Due Date</label>
+                      <input value="${dateInput}" type="date" id="date" class="border border-semiGray rounded-md bg-transparent pl-2 focus:ring-0" required>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                      <label for="status" class="font-medium">Priority</label>
+                      <select name="status" id="status" class="border border-semiGray rounded-md bg-transparent pl-2 focus:ring-0">
                         <option value="high">important</option>
                         <option value="medium">not so important</option>
                         <option value="low">very not important</option>
@@ -116,26 +116,26 @@ export const dynamicModal = (formID, modalTitle, titleInput, descInput, dateInpu
 export const showInfoModal = (title, description, date, priority) => {
   const infoModalELement = `
         <dialog id="info_modal" class="modal">
-          <form method="dialog" class="modal-box bg-[#f7f7f5]">
+          <form method="dialog" class="modal-box bg-[#f7f7f5] dark:bg-[#202020] text-semiBlack dark:text-white">
             <div class="flex flex-col gap-6">
-              <h3 class="font-semibold text-semiBlack text-lg">Task Info</h3>
-              <div class="flex flex-row gap-2 text-semiBlack">
-                <label class="text-semiBlack font-medium w-24 pr-2">Title</label>
+              <h3 class="font-semibold text-lg">Task Info</h3>
+              <div class="flex flex-row gap-2">
+                <label class="font-medium w-24 pr-2">Title</label>
                 <h3>${title}</h3>
               </div>
 
-              <div class="flex flex-row gap-2 text-semiBlack">
-                <label class="text-semiBlack font-medium w-24 pr-2">Description</label>
+              <div class="flex flex-row gap-2">
+                <label class="font-medium w-24 pr-2">Description</label>
                 <p>${description}</p>
               </div>
 
-              <div class="flex flex-row gap-2 text-semiBlack">
-                <label class="text-semiBlack font-medium w-24 pr-2">Due Date</label>
+              <div class="flex flex-row gap-2">
+                <label class="font-medium w-24 pr-2">Due Date</label>
                 <span>${date}</span>
               </div>
 
-              <div class="flex flex-row gap-2 text-semiBlack">
-                <label class="text-semiBlack font-medium w-24 pr-2">Priority</label>
+              <div class="flex flex-row gap-2">
+                <label class="font-medium w-24 pr-2">Priority</label>
                 <span>${priority}</span>
               </div>
 
@@ -200,7 +200,7 @@ export const displayTaskCount = (taskCount) => {
 // remove highlight from all the tabs with the same class name
 // get the current clicked element id and add the class style of current folder to it
 export const highlightCurrentTab = (currentElementClicked) => {
-  const allTabs = document.querySelectorAll(".folder");
+  const allTabs = document.querySelectorAll(".page");
   allTabs.forEach(tab => {
     tab.classList.remove('bg-tabHighlight', 'text-semiPink');
   });
