@@ -1,5 +1,6 @@
 import { toDoContainer } from './dom.js';
-import { isWithinInterval, parse, format, isValid, isMatch } from "date-fns";
+import { checkCheckboxState } from './handlers.js';
+import { parse, format, isValid } from "date-fns";
 
 export class ToDo {
   constructor(title, description, date, priority, taskIndex) {
@@ -17,12 +18,14 @@ export class ToDo {
       description: "This is the first default task.",
       dueDate: "2023-08-29",
       priority: "high",
+      completed: false,
     },
     {
       title: "Default Task 2",
       description: "This is the second default task.",
       dueDate: "2023-08-30",
       priority: "medium",
+      completed: false,
     },
   ];
 
@@ -61,17 +64,18 @@ export class ToDo {
     }
   }
 
-  addToDo() {
+  addToDo(array, key, optionalArray) {
     // add toDo to the array
-   ToDo.tasksArray.push(this);
-    localStorage.setItem("tasks", JSON.stringify(ToDo.tasksArray))
+    array.push(this);
+    localStorage.setItem(key, JSON.stringify(optionalArray))
+    // the reason why there is another "optional array" is to let folder tasks which is a 2d array to be set in the local storage and not the inside scope of it (e.g Folder.folderTasks[index])
   }
 
   static delete(taskIndex) {
     if (taskIndex > -1) {
       ToDo.tasksArray.splice(taskIndex, 1);
       localStorage.setItem("tasks", JSON.stringify(ToDo.tasksArray));
-      ToDo.renderToDo();
+      ToDo.renderToDo("todo-container", ToDo.tasksArray);
     }
   }
 
@@ -85,14 +89,16 @@ export class ToDo {
   //
   // }
 
-  static renderToDo() {
-    const $ToDoBody = document.querySelector("#todo-container");
+  static renderToDo(containerId, tasksArray) {
+    // console.log(containerId)
+    const $ToDoBody = document.querySelector(`#${containerId}`);
     $ToDoBody.innerHTML = "";
     // render all todo in array & assign values to it
-    ToDo.tasksArray.forEach((task, index) => {
-      const formattedDate = ToDo.getFormattedDate(task.dueDate || task.date); // Format the date using the method
+    tasksArray.forEach((task, index) => {
+      const formattedDate = ToDo.getFormattedDate(task.dueDate || task.date);
       $ToDoBody.insertAdjacentHTML("beforeend", toDoContainer(task.title, formattedDate, index));
     });
-    console.log(ToDo.tasksArray)
+    checkCheckboxState(); // load checkbox state
+    // console.log(ToDo.tasksArray)
   }
 }
