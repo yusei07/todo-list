@@ -28,7 +28,7 @@ export const defaultHTML = `<div class="drawer lg:drawer-open" id="main-drawer">
 
               <div class="dropdown dropdown-end">
                 <label tabindex="0" class="btn text-white font-light px-6 m-1 dark:bg-white dark:text-black">Share</label>
-                <div tabindex="0" class="dropdown-content z-[1] card card-compact w-max p-0 shadow bg-white text-black">
+                <div tabindex="0" class="dropdown-content z-[1] card card-compact w-max p-0 shadow bg-white text-black dark:bg-[#202020] dark:text-white">
                   <div class="card-body w-full">
                     <h3 class="card-title">Share with</h3>
                     <div class="flex flex-row items-center gap-2 mb-2">
@@ -117,16 +117,16 @@ export const defaultHTML = `<div class="drawer lg:drawer-open" id="main-drawer">
 
 
           <!-- help/support -->
-          <div class="absolute bottom-4 right-4 md:right-6 lg:right-12">
+          <div class="fixed bottom-4 right-4 md:right-6 lg:right-12">
             <div class="dropdown dropdown-top dropdown-end">
               <label tabindex="0" class="btn m-1 bg-transparent hover:bg-semiGray hover:border-semiGray border border-semiGray px-[1.15rem] py-2 rounded-full shadow-md text-semiBlack text-lg font-medium dark:text-white dark:bg-[#202020] dark:border-none">?</label>
-              <div class="dropdown-content card card-compact w-max z-[1] p-0 shadow bg-white text-black">
+              <div class="dropdown-content card card-compact w-max z-[1] p-0 shadow bg-white text-black dark:bg-[#202020]">
                 <div class="card-body w-60">
                   <div class="card-title">
-                    <i data-feather="book-open" class="w-4 h-4 text-semiBlack stroke-[3]"></i>
-                    <h3 class="font-semibold text-semiBlack text-lg">Help</h3>
+                    <i data-feather="book-open" class="w-4 h-4 text-semiBlack dark:text-white stroke-[3]"></i>
+                    <h3 class="font-semibold text-semiBlack dark:text-white text-lg">Help</h3>
                   </div>
-                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel non blanditiis cum accusamus ex recusandae facilis maiores placeat, animi ipsam, suscipit fugiat voluptatibus! Blanditiis veniam, adipisci explicabo deserunt possimus quas!</p>
+                  <p class="dark:text-white">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel non blanditiis cum accusamus ex recusandae facilis maiores placeat, animi ipsam, suscipit fugiat voluptatibus! Blanditiis veniam, adipisci explicabo deserunt possimus quas!</p>
                 </div>
               </div>
             </div>
@@ -146,12 +146,12 @@ export const defaultHTML = `<div class="drawer lg:drawer-open" id="main-drawer">
               </div>
             </div>
 
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2" id="main-category">
 
               <h1 class="text-semiBlack font-semibold text-md dark:text-white">Index</h1>
 
               <ul class="menu w-full rounded-box p-0 flex flex-col gap-2">
-                <li class="rounded-md hover:bg-semiGray transition duration-300 font-medium text-md text-semiPink bg-[#f1f1f0]">
+                <li id="home-page" class="page rounded-md hover:bg-semiGray transition duration-300 font-medium text-md text-semiPink bg-tabHighlight">
                   <a class="flex flex-row items-center"><i data-feather="home" class="w-4 h-4 text-secondary stroke-[2]"></i>Home</a>
                 </li>
                 <li>
@@ -161,8 +161,8 @@ export const defaultHTML = `<div class="drawer lg:drawer-open" id="main-drawer">
                       Filter
                     </summary>
                     <ul>
-                      <li class="rounded-md hover:bg-semiGray transition duration-300 font-medium text-md text-secondary"><a><i data-feather="calendar" class="w-4 h-4 text-secondary stroke-[2]"></i>Today</a></li>
-                      <li class="rounded-md hover:bg-semiGray transition duration-300 font-medium text-md text-secondary"><a><i data-feather="archive" class="w-4 h-4 text-secondary stroke-[2]"></i>This week</a></li>
+                      <li id="today-page" class="page rounded-md hover:bg-semiGray transition duration-300 font-medium text-md text-secondary"><a><i data-feather="calendar" class="w-4 h-4 text-secondary stroke-[2]"></i>Today</a></li>
+                      <li id="week-page" class="page rounded-md hover:bg-semiGray transition duration-300 font-medium text-md text-secondary"><a><i data-feather="archive" class="w-4 h-4 text-secondary stroke-[2]"></i>This week</a></li>
                     </ul>
                   </details>
                 </li>
@@ -173,8 +173,8 @@ export const defaultHTML = `<div class="drawer lg:drawer-open" id="main-drawer">
                       Status
                     </summary>
                     <ul>
-                      <li class="rounded-md hover:bg-semiGray transition duration-300 font-medium text-md text-secondary"><a><i data-feather="zap" class="w-4 h-4 text-secondary stroke-[2]"></i>Important</a></li>
-                      <li class="rounded-md hover:bg-semiGray transition duration-300 font-medium text-md text-secondary"><a><i data-feather="check-square" class="w-4 h-4 text-secondary stroke-[2]"></i>Completed</a></li>
+                      <li id="important-page" class="page rounded-md hover:bg-semiGray transition duration-300 font-medium text-md text-secondary"><a><i data-feather="zap" class="w-4 h-4 text-secondary stroke-[2]"></i>Important</a></li>
+                      <li id="completed-page" class="page rounded-md hover:bg-semiGray transition duration-300 font-medium text-md text-secondary"><a><i data-feather="check-square" class="w-4 h-4 text-secondary stroke-[2]"></i>Completed</a></li>
                     </ul>
                   </details>
                 </li>
