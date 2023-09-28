@@ -1,5 +1,5 @@
 import { ToDo } from './task.js';
-import { getCompletedTasks, completedTaskCount, getImportantTasks, getToday, getThisWeek } from './handlers.js';
+import { getCompletedTasks, completedTaskCount, getImportantTasks, getToday, getThisWeek, toDoFeatureHandler } from './handlers.js';
 import { displayTaskCount, highlightCurrentTab } from './dom.js';
 
 // const todoContainer = document.querySelector("#todo-container");
@@ -11,6 +11,9 @@ export const loadHome = (container) => {
     highlightCurrentTab(homePage);
     displayToDoAddBtn();
     ToDo.renderToDo("todo-container", ToDo.tasksArray)
+    // make todofeaturehandler array ToDo.tasksArray
+    // console.log(ToDo.tasksArray);
+    toDoFeatureHandler(ToDo.tasksArray);
     displayTaskCount(ToDo.taskCount);
     // feather.replace();
   })
@@ -24,6 +27,9 @@ export const loadToday = (container) => {
     removeToDoAddBtn();
     const todayTasks = getToday();
     ToDo.renderToDo("todo-container", todayTasks)
+    // make todofeaturehandler array todayTasks
+    console.log("Today's tasks", todayTasks);
+    toDoFeatureHandler(todayTasks);
     displayTaskCount(todayTasks.length);
   })
 }
@@ -36,6 +42,9 @@ export const loadThisWeek = (container) => {
     removeToDoAddBtn();
     const thisWeekTasks = getThisWeek(ToDo.tasksArray);
     ToDo.renderToDo("todo-container", thisWeekTasks)
+    // make todofeaturehandler array thisWeekTasks 
+    // console.log(thisWeekTasks);
+    toDoFeatureHandler(thisWeekTasks);
     displayTaskCount(thisWeekTasks.length);
   })
 }
@@ -48,6 +57,9 @@ export const loadImportant = (container) => {
     removeToDoAddBtn();
     const importantTasks = getImportantTasks();
     ToDo.renderToDo("todo-container", importantTasks) // make the getImportantTasks function
+    // make todofeaturehandler array thisWeekTasks 
+    // console.log(importantTasks);
+    toDoFeatureHandler(importantTasks);
     displayTaskCount(importantTasks.length);
   })
 }
@@ -63,8 +75,10 @@ export const loadCompleted = (container) => {
     // load completed tasks
     const completedTasks = getCompletedTasks();
     ToDo.renderToDo("todo-container", completedTasks)
+    // make todofeaturehandler array thisWeekTasks 
+    toDoFeatureHandler(completedTasks);
 
-    // make all checkbox checked & title strike-through
+    // force all checkbox checked & title strike-through
     const allTaskCheckboxes = document.querySelectorAll('#todo-container input[type="checkbox"]');
     const allTaskTitles = document.querySelectorAll('#todo-container #task-title');
     
