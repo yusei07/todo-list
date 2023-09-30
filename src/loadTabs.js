@@ -77,17 +77,6 @@ export const loadCompleted = (container) => {
     ToDo.renderToDo("todo-container", completedTasks)
     // make todofeaturehandler array thisWeekTasks 
     toDoFeatureHandler(completedTasks);
-
-    // force all checkbox checked & title strike-through
-    const allTaskCheckboxes = document.querySelectorAll('#todo-container input[type="checkbox"]');
-    const allTaskTitles = document.querySelectorAll('#todo-container #task-title');
-    
-    allTaskCheckboxes.forEach((checkbox, index) => {
-      checkbox.checked = true;
-      const title = allTaskTitles[index];
-      title.innerHTML = `<strike>${title.textContent}</strike>`; // apply strike-through
-    });
-
     displayTaskCount(completedTaskCount());
   })
 }
