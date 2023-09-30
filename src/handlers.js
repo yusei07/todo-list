@@ -2,27 +2,6 @@ import { ToDo } from './task.js';
 import { format, startOfWeek, endOfWeek, isWithinInterval } from 'date-fns';
 import { showInfoModal, dynamicModal, displayTaskCount } from './dom.js';
 
-export const saveCheckboxState = (checkboxId, isChecked) => {
-  localStorage.setItem(checkboxId, isChecked); // e.g  1 : true
-}
-
-export const loadCheckboxState = (checkboxId) => {
-  const isChecked = localStorage.getItem(checkboxId);
-  if (isChecked === "true") {
-    const checkbox = document.getElementById(checkboxId);
-    const spanElement = checkbox.nextElementSibling;
-
-    if (checkbox) {
-      checkbox.checked = true; // check the checkbox
-    }
-
-    if (spanElement) {
-      spanElement.innerHTML = `<strike>${spanElement.textContent}</strike>`; // apply strike-through
-    }
-  }
-}
-
-
 export const checkboxListener = () => {
   document.addEventListener("change", (e) => {
     // Check if the changed element is an input with the id "check-btn"
@@ -30,7 +9,6 @@ export const checkboxListener = () => {
       // toggle complete
       const currentIndex = e.target.getAttribute("data-index");
       const currentTaskIndex = ToDo.tasksArray[currentIndex];
-      const currentId = currentIndex;
 
       // select the span (title span)
       const spanElement = e.target.nextElementSibling;
@@ -45,29 +23,23 @@ export const checkboxListener = () => {
         }
       }
 
-      saveCheckboxState(currentId, currentTaskIndex.completed);
       localStorage.setItem("tasks", JSON.stringify(ToDo.tasksArray)); // update task date in local storage 
     }
   });
 }
 
-export const checkCheckboxState = () => {
-  const allTask = document.querySelectorAll('#todo-container input[type="checkbox"]');
-  allTask.forEach(checkbox => {
-    loadCheckboxState(checkbox.id);
-  })
-}
-
 // TODO: make another todo method
 // load on each tab and pass in the corresponding array 
-const checkCheckbox = (array) => {
-  array.forEach(task => {
+const checkCheckboxState = (array) => {
+  array.forEach((task, index) => {
     if (task.completed === true) {
       // need to grab the id of the element to grab the checkbox and title
-      const targetTaskEl = document.querySelector(`#todo-element-${task}`)
+      const targetTaskEl = document.querySelector(`#todo-element-${index}`)
       const targetCheckbox = targetTaskEl.querySelector('input[type="checkbox"]')
       const targetTitle = targetCheckbox.nextElementSibling;
       // apply check style
+      targetCheckbox.checked = true;
+      targetTitle.innerHTML = `<strike>${targetTitle.textContent}</strike>`;
     }
   });
 }
