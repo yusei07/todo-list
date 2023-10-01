@@ -3,8 +3,8 @@ import { checkCheckboxState } from './handlers.js';
 import { parse, format, isValid } from "date-fns";
 
 export class ToDo {
-  constructor(title, description, date, priority, taskIndex, id) {
-    this.id = id
+  constructor(title, description, date, priority, taskIndex) {
+    this.id = crypto.randomUUID()
     this.title = title;
     this.description = description;
     this.dueDate = date;
@@ -66,12 +66,11 @@ export class ToDo {
     // the reason why there is another "optional array" is to let folder tasks which is a 2d array to be set in the local storage and not the inside scope of it (e.g Folder.folderTasks[index])
   }
 
-  static delete(taskIndex) {
-    if (taskIndex > -1) {
-      ToDo.tasksArray.splice(taskIndex, 1);
+  static delete(taskId) {
+      ToDo.tasksArray = ToDo.tasksArray.filter((todo) => todo.id !== taskId)
       localStorage.setItem("tasks", JSON.stringify(ToDo.tasksArray));
       ToDo.renderToDo("todo-container", ToDo.tasksArray);
-    }
+
   }
 
   static renderToDo(containerId, tasksArray) {
@@ -81,8 +80,8 @@ export class ToDo {
     // render all todo in array & assign values to it
     tasksArray.forEach((task, index) => {
       const formattedDate = ToDo.getFormattedDate(task.dueDate || task.date);
-      $ToDoBody.insertAdjacentHTML("beforeend", toDoContainer(task.title, formattedDate, index));
+      $ToDoBody.insertAdjacentHTML("beforeend", toDoContainer(task.title, formattedDate, index, task.id));
     });
-    checkCheckboxState(); // load checkbox state
+    checkCheckboxState(tasksArray); // load checkbox state
   }
 }

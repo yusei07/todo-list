@@ -1,6 +1,6 @@
 import { ToDo } from "./task.js";
 
-export const toDoContainer = (title, date, taskIndex) => {
+export const toDoContainer = (title, date, taskIndex, taskId) => {
   const toDoElement = `
   <div id="todo-element-${taskIndex}" class="flex flex-row items-center justify-between border-b border-semiGray py-5">
     <!-- checkbox & title -->
@@ -11,14 +11,15 @@ export const toDoContainer = (title, date, taskIndex) => {
     <!-- details/due date/edit/delete -->
     <div class="flex flex-row items-center gap-4">
       <span class="text-semiBlack dark:text-white text-sm">${date}</span>
-      <i id="info-btn" data-index="${taskIndex}" data-feather="info" class="cursor-pointer w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
-      <i id="edit-btn" data-index="${taskIndex}" data-feather="edit-3" class="cursor-pointer w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
-      <i id="del-btn" data-index="${taskIndex}" data-feather="x" class="delete-btn cursor-pointer w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
+      <i id="info-btn" data-taskid=${taskId} data-index="${taskIndex}" data-feather="info" class="cursor-pointer w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
+      <i id="edit-btn" data-taskid=${taskId} data-index="${taskIndex}" data-feather="edit-3" class="cursor-pointer w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
+      <i id="del-btn" data-taskid=${taskId} data-index="${taskIndex}" data-feather="x" class="delete-btn cursor-pointer w-5 h-5 text-secondary hover:text-semiBlack transition duration-300 stroke-[2] dark:text-white"></i>
     </div>
   </div>`;
 
   return toDoElement;
 }
+
 
 export const folderHTML = (title, folderIndex) => {
   const folderElement = `<div id="folder-element" class="folder rounded-md hover:bg-semiGray transition duration-300 px-4 py-2 font-medium text-md text-secondary flex flex-row items-center gap-2 justify-between" folder-data-index="${folderIndex}">

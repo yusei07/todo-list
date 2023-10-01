@@ -30,8 +30,8 @@ export const checkboxListener = () => {
 
 // TODO: make another todo method
 // load on each tab and pass in the corresponding array 
-const checkCheckboxState = (array) => {
-  array.forEach((task, index) => {
+export const checkCheckboxState = (array) => {
+  array?.forEach((task, index) => {
     if (task.completed === true) {
       // need to grab the id of the element to grab the checkbox and title
       const targetTaskEl = document.querySelector(`#todo-element-${index}`)
@@ -80,20 +80,14 @@ export function getImportantTasks() {
 // handle filter -> today & this week
 
 export const getToday = () => {
-  const arrToday = [];
-
   // get todays date
   const today = new Date();
   const formattedToday = format(today, 'yyyy-MM-dd');
 
   // compare today's date with all obj date inside the arr
-  for (let i = 0; i < ToDo.tasksArray.length; i++) {
-    if (ToDo.tasksArray[i].dueDate === formattedToday) {
-      arrToday.push(ToDo.tasksArray[i]);
-    }
-  }
+  const todayList = ToDo.tasksArray.filter((todo) => todo.dueDate === formattedToday)
 
-  return arrToday;
+  return todayList;
 }
 
 export const getThisWeek = (tasks) => {
@@ -124,7 +118,9 @@ export const toDoFeatureHandler = (array) => {
   document.addEventListener("click", (e) => {
     // delete
     if (e.target.id === "del-btn") {
-      const delTaskIndex = e.target.getAttribute("data-index");
+      console.log("CLICK")
+      const delTaskIndex = e.target.getAttribute("data-taskid");
+      console.log(delTaskIndex)
       // console.log(taskIndex);
       ToDo.delete(delTaskIndex);
       localStorage.removeItem(delTaskIndex); // remove checked id (so the next added task wont get checked)
@@ -133,8 +129,9 @@ export const toDoFeatureHandler = (array) => {
 
     // edit
     if (e.target.id === "edit-btn") {
-      const editTaskIndex = e.target.getAttribute("data-index");
-      const currentEditTask = array[editTaskIndex];
+      const infoTaskId = e.target.getAttribute("data-taskid")
+
+      const currentEditTask = array.find((todo) => todo.id === infoTaskId)
 
       // assign value to modal
       const editModalContent = dynamicModal("edit-todo-form", "Edit Task", currentEditTask.title, currentEditTask.description, currentEditTask.dueDate, "Edit");
@@ -155,9 +152,11 @@ export const toDoFeatureHandler = (array) => {
     // info
     if (e.target.id === "info-btn") {
       // get index
-      const infoTaskIndex = e.target.getAttribute("data-index");
-      console.log("Current task index:", infoTaskIndex);
-      const currentTask = array[infoTaskIndex];
+      const infoTaskId = e.target.getAttribute("data-taskid")
+
+      const currentTask = array.find((todo) => todo.id === infoTaskId)
+
+      // const currentTask = array[infoTaskIndex];
       console.log("Current task arr:", currentTask);
 
       // assign value to modal

@@ -89,7 +89,7 @@ function listenToDoSubmit(array, key, optionalArray)  {
   $addToDoForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const task = new ToDo(addFormDOM.$title.value, addFormDOM.$description.value, addFormDOM.$date.value, addFormDOM.$priority.value);
+    const task = new ToDo(addFormDOM.$title.value, addFormDOM.$description.value, addFormDOM.$date.value, addFormDOM.$priority.value, );
 
     task.addToDo(array, key, optionalArray); // adds task to desired array
 

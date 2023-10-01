@@ -2,8 +2,6 @@ import { ToDo } from './task.js';
 import { getCompletedTasks, completedTaskCount, getImportantTasks, getToday, getThisWeek, toDoFeatureHandler } from './handlers.js';
 import { displayTaskCount, highlightCurrentTab } from './dom.js';
 
-// const todoContainer = document.querySelector("#todo-container");
-
 export const loadHome = (container) => {
   const homePage = document.querySelector("#home-page");
   homePage.addEventListener("click", () => {
