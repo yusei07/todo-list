@@ -3,7 +3,8 @@ import { checkCheckboxState } from './handlers.js';
 import { parse, format, isValid } from "date-fns";
 
 export class ToDo {
-  constructor(title, description, date, priority, taskIndex) {
+  constructor(title, description, date, priority, taskIndex, id) {
+    this.id = id
     this.title = title;
     this.description = description;
     this.dueDate = date;
@@ -14,6 +15,7 @@ export class ToDo {
 
   static tasksArray = JSON.parse(localStorage.getItem("tasks")) || [
     {
+      id: crypto.randomUUID(),
       title: "Default Task 1",
       description: "This is the first default task.",
       dueDate: "2023-08-29",
@@ -21,6 +23,7 @@ export class ToDo {
       completed: false,
     },
     {
+      id: crypto.randomUUID(),
       title: "Default Task 2",
       description: "This is the second default task.",
       dueDate: "2023-08-30",
@@ -39,14 +42,6 @@ export class ToDo {
   get date() {
      return this.dueDate;
   }
-
-  // get dateString() {
-  //    return isValid(this.date) ? format(this.date, "yyyy-MM-dd") : "";
-  // }
-
-  // static isEnteredDateValid(dateToCheck) {
-  //   return isMatch(dateToCheck, "yyyy-MM-dd");
-  // }
 
   static getFormattedDate(date) {
     const dateInstance = new Date(date);
@@ -79,16 +74,6 @@ export class ToDo {
     }
   }
 
-  // edit() {
-    // checkBox.addEventListener('change', function() {
-    //   labelText.style.textDecoration = checkBox.checked ? 'line-through' : 'none';
-    // });
-  // }
-
-  // toggleComplete() {
-  //
-  // }
-
   static renderToDo(containerId, tasksArray) {
     // console.log(containerId)
     const $ToDoBody = document.querySelector(`#${containerId}`);
@@ -99,6 +84,5 @@ export class ToDo {
       $ToDoBody.insertAdjacentHTML("beforeend", toDoContainer(task.title, formattedDate, index));
     });
     checkCheckboxState(); // load checkbox state
-    // console.log(ToDo.tasksArray)
   }
 }
