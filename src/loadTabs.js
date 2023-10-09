@@ -84,7 +84,7 @@ const removeToDoAddBtn = () => {
   addBtn.classList.add('hidden');
 }
 
-const displayToDoAddBtn = () => {
+export const displayToDoAddBtn = () => {
   const addBtn = document.querySelector("#add-todo");
   addBtn.classList.remove('hidden');
 }
@@ -94,4 +94,3 @@ const displayToDoAddBtn = () => {
 // get main content dom
 // get from dom.js the html element/components
 // make the current tab on the sidebar different text & bg color (indicating that the user is on the current tab)
-

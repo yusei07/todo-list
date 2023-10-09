@@ -28,8 +28,6 @@ export const checkboxListener = () => {
   });
 }
 
-// TODO: make another todo method
-// load on each tab and pass in the corresponding array 
 export const checkCheckboxState = (array) => {
   array?.forEach((task, index) => {
     if (task.completed === true) {
@@ -116,6 +114,7 @@ export const getThisWeek = (tasks) => {
 // todo features handler
 export const toDoFeatureHandler = (array) => {
   document.addEventListener("click", (e) => {
+    console.log("before", array);
     // delete
     if (e.target.id === "del-btn") {
       console.log("CLICK")
@@ -151,6 +150,7 @@ export const toDoFeatureHandler = (array) => {
 
     // info
     if (e.target.id === "info-btn") {
+      console.log("after", array);
       // get index
       const infoTaskId = e.target.getAttribute("data-taskid")
 
@@ -222,4 +222,10 @@ export const getFormDOM = () => {
     $date,
     $priority
   };
+}
+
+export const cancelBtn = () => {
+  document.querySelector("#cancel-btn").addEventListener("click", () => {
+    closeModal(document.querySelector("#todo_modal"));
+  })
 }

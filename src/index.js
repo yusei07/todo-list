@@ -11,11 +11,18 @@ import {
 import { defaultHTML } from './htmlComponents.js'
 import { ToDo } from './task.js';
 import { Folder } from './folder.js';
-import { checkboxListener, toDoFeatureHandler, closeModal, getFormDOM } from './handlers.js';
-import { loadHome, loadToday, loadThisWeek, loadImportant, loadCompleted } from './loadTabs';
+import { checkboxListener, toDoFeatureHandler, closeModal, getFormDOM, cancelBtn } from './handlers.js';
+import { loadHome, loadToday, loadThisWeek, loadImportant, loadCompleted, displayToDoAddBtn } from './loadTabs';
 
 // globals
 const container = document.querySelector("#content");
+
+container.addEventListener("click", (e) => {
+  if (e.target.id === "home-page") {
+    console.log("home is clicked");
+    // loadHome();
+  }
+});
 
 window.addEventListener("load", () => {
   // load home page
@@ -34,6 +41,7 @@ window.addEventListener("load", () => {
   todoAdd(ToDo.tasksArray, "tasks", ToDo.tasksArray);
   folderAdd();
   folderListener();
+  // cancelBtn();
   // console.log("Folder task:", Folder.folderTasks);
 
   // ui functions
@@ -78,6 +86,7 @@ const todoAdd = (array, key, optionalArray) => {
     $todoModal.showModal();
     console.log(array, key, optionalArray);
     listenToDoSubmit(array, key, optionalArray);
+    cancelBtn(); // close/cancel listener to close the modal
   })
 }
 
@@ -115,6 +124,7 @@ const folderAdd = () => {
     document.querySelector("#folder_modal").showModal();
 
     listenFolderSubmit();
+    cancelBtn(); // close/cancel listener to close the modal
   })
 }
 
@@ -157,6 +167,7 @@ const folderListener = () => {
 
       // listen for submit
       editFolderSubmit(currentFolderIndex);
+      cancelBtn(); // close/cancel listener to close the modal
     }
 
     // del btn
@@ -169,6 +180,7 @@ const folderListener = () => {
 
     // display tasks inside current folder 
     if (e.target.id === "folder-element") {
+      displayToDoAddBtn(); // in case user comes from page with todo btn being hidden
       // get the index
       const folderIndex = e.target.getAttribute("folder-data-index");
       const currentFolderTasks = Folder.folderTasks[folderIndex];

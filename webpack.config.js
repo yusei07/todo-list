@@ -7,6 +7,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js', // bundled/output file
   },
+  debug: true,
   devtool: 'inline-source-map', // source map
   devServer: {
     static: {

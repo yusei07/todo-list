@@ -36,6 +36,7 @@ export const folderHTML = (title, folderIndex) => {
   return folderElement;
 }
 
+// TODO: add required to the input to make sure its not empty
 export const folderModal = (folderTitle, inputTitle) => {
   const folderModalElement = `<!-- folder input modal -->
         <dialog id="folder_modal" class="modal">
@@ -45,11 +46,11 @@ export const folderModal = (folderTitle, inputTitle) => {
               <h3 class="font-semibold text-semiBlack dark:text-white text-lg">${folderTitle}</h3>
               <div class="flex flex-col gap-2">
                 <label for="title" class="text-semiBlack dark:text-white font-medium">Title</label>
-                <input id="folder-title" type="text" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0 dark:text-white" value="${inputTitle}" required>
+                <input id="folder-title" type="text" class="border border-semiGray rounded-md bg-transparent text-semiBlack pl-2 focus:ring-0 dark:text-white" value="${inputTitle}">
               </div>
 
               <div class="flex flex-row items-center gap-2 ml-auto">
-                <button class="btn" onclick="folder_modal.close()">Cancel</button>
+                <button class="btn" id="cancel-btn">Cancel</button>
                 <input type="submit" value="Add" class="btn text-white bg-softGreen px-6 border-none">
               </div>
             </div>
@@ -100,7 +101,7 @@ export const dynamicModal = (formID, modalTitle, titleInput, descInput, dateInpu
                     </div>
                   </div>
                   <div class="flex flex-row items-center gap-2 ml-auto">
-                    <button class="btn" onclick="folder_modal.close()">Cancel</button>
+                    <button class="btn" id="cancel-btn">Cancel</button>
                     <input type="submit" value="${buttonValue}" class="btn text-white bg-softGreen px-6 border-none">
                   </div>
                 </div>
